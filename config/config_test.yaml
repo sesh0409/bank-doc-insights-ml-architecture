@@ -1,0 +1,62 @@
+# =========================================================
+# TEST / UAT CONFIG — Azure ML Architecture Repo
+# Pre-production validation with masked / anonymized data.
+# =========================================================
+
+environment: "test"
+
+storage:
+  account_name: "testadlsaccount"
+  container_raw: "raw-documents-test"
+  container_processed: "processed-data-test"
+  container_curated: "gold-zone-test"
+  file_system_type: "adls_gen2"
+
+document_ai:
+  endpoint: "https://<region>-test.cognitiveservices.azure.com/"
+  form_recognizer_key: "TEST_FORM_RECOGNIZER_KEY"
+  model_ids:
+    bank_statement: "test-model-bank-statement"
+    loan_application: "test-model-loan-app"
+    onboarding_form: "test-model-onboarding"
+
+data_validation:
+  enforce_schema: true
+  dq_rules:
+    - "no_null_critical_fields"
+    - "income_positive"
+    - "valid_customer_age"
+    - "valid_country_region"
+  allow_experimental_fields: false
+
+ml:
+  aml_workspace: "bank-analytics-ml-ws-test"
+  resource_group: "bank-analytics-test-rg"
+  subscription_id: "00000000-0000-0000-0000-000000000000"
+  compute_cluster_name: "ml-compute-test"
+  default_model_version: "candidate"
+  enable_auto_retrain: false
+
+api:
+  scoring_endpoint:
+    churn_model: "https://api-test.bank.com/churn/score"
+    loan_risk_model: "https://api-test.bank.com/loan-risk/score"
+  batch_scoring_schedule: "0 */2 * * *"   # Every 2 hours in Test
+
+logging:
+  level: "INFO"
+  enable_audit: true
+  audit_sink: "log_analytics_test"
+
+powerbi:
+  workspace: "Bank-Analytics-Test"
+  datasets:
+    - "Customer360_Test"
+    - "LoanRisk_Test"
+    - "ChurnInsights_Test"
+
+security:
+  use_managed_identity: true
+  key_vault_name: "bank-analytics-kv-test"
+  enforce_pii_masking: true
+  allow_test_users: true
