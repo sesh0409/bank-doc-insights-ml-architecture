@@ -19,7 +19,7 @@ print(f"Total ingested: {len(metadata_items)}")
 ```
 ## 2️⃣ Extraction — Simulated Document AI → Structured JSON
 
-
+```python
 from pathlib import Path
 from data_pipeline.ingestion import ingest_to_landing
 from data_pipeline.extraction import extract_from_metadata_items
@@ -33,9 +33,11 @@ extracted = extract_from_metadata_items(metas)
 print(f"Total extracted: {len(extracted)}")
 for r in extracted:
     print(r.metadata.document_type, r.confidence)
+```
 
 ## 3️⃣ Validation — Quality Checks + Business Rules
 
+```python
 from pathlib import Path
 from data_pipeline.ingestion import ingest_to_landing
 from data_pipeline.extraction import extract_from_metadata_items
@@ -50,10 +52,11 @@ validations = validate_batch(extracted)
 
 for vr in validations:
     print(vr.to_dict())
+```
 
+## 4️⃣ Schemas — Canonical Structured Entities
 
-##4️⃣ Schemas — Canonical Structured Entities
-
+```python
 from data_pipeline.schemas import CustomerRecord, LoanApplicationRecord
 
 customer = CustomerRecord(
@@ -75,4 +78,5 @@ loan = LoanApplicationRecord(
 
 print(customer)
 print(loan)
+```
 
