@@ -130,11 +130,11 @@ Curated Zone – Customer 360 views, loan facts, model scoring outputs.
 
 data_pipeline/ in this repo conceptually maps to P1 + P2 + DL1 + DL2.
 
-5.1 ML Platform on Azure (Training and Scoring)
+## 5.1 ML Platform on Azure (Training and Scoring)
 
 Azure ML handles training, model registry, and deployment of scoring endpoints.
 
-5.2 Components
+## 5.2 Components
 
 Azure ML workspace, compute clusters
 
@@ -146,7 +146,7 @@ ML pipelines for training and batch scoring
 
 Model lifecycle details are in /ml/model_lifecycle.md.
 
-5.3 ML Flow
+## 5.3 ML Flow
 
 ```mermaid
 flowchart TB
@@ -162,7 +162,7 @@ flowchart TB
 
 Networking and security ensure private, compliant access to all data and services.
 
-6.1 Networking
+## 6.1 Networking
 
 Hub-spoke VNet design with separate spokes for Data, ML, and App layers.
 
