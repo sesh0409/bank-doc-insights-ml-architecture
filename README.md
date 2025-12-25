@@ -304,18 +304,18 @@ The goal is to present the **end-to-end architecture and implementation approach
 
 While this solution meets current business goals for document automation and customer intelligence, the following improvement opportunities will strengthen competitiveness:
 
-1.Expand beyond document-driven insights to richer core banking integrations.
+   **1.**Expand beyond document-driven insights to richer core banking integrations.
 
-2.Increase real-time inference across customer digital journeys, not just underwriting.
+   **2.**Increase real-time inference across customer digital journeys, not just underwriting.
 
-3.Extend personalization models using behavioral, app interaction, and segmentation data.
+   **3.**Extend personalization models using behavioral, app interaction, and segmentation data.
 
-4.Incorporate AI-powered fraud scoring and risk-based pricing models into the pipeline.
+   **4.**Incorporate AI-powered fraud scoring and risk-based pricing models into the pipeline.
 
-5.Integrate customer feedback and sentiment analytics to accelerate customer retention.
+   **5.**Integrate customer feedback and sentiment analytics to accelerate customer retention.
 
-6.Introduce reinforcement learning for Next-Best-Action to continuously optimize outcomes.
+   **6.**Introduce reinforcement learning for Next-Best-Action to continuously optimize outcomes.
 
-7.Enable federated learning to support secure collaboration with partner ecosystems.
+   **7.**Enable federated learning to support secure collaboration with partner ecosystems.
 
 These enhancements will elevate the bank’s capability to deliver faster decisions, deeper personalization, and more intelligent financial engagement aligned with evolving industry standards.
