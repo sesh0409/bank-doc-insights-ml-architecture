@@ -1,24 +1,21 @@
-## Solution Architecture — Customer Insights & Loan Optimization
-
-```mermaid
 flowchart TB
 
 %% === STYLE CONFIGURATION ===
-classDef layer fill:#0078D4,stroke:#003B73,stroke-width:2px,color:#ffffff,font-weight:bold;
-classDef component fill:#E5F3FF,stroke:#0078D4,stroke-width:1.5px,color:#003B73,font-weight:bold;
-classDef security fill:#FDE7E7,stroke:#B22222,stroke-width:1.5px,color:#7A0000,font-weight:bold;
+classDef layer fill:#0078D4,stroke:#003B73,stroke-width:2px,color:#ffffff,font-weight:bold
+classDef component fill:#E5F3FF,stroke:#0078D4,stroke-width:1.5px,color:#003B73,font-weight:bold
+classDef security fill:#FDE7E7,stroke:#B22222,stroke-width:1.5px,color:#7A0000,font-weight:bold
 
 %% === INGESTION LAYER ===
 subgraph ING [Ingestion Layer]
 A1["Branch / Portal Upload"]:::component
-A2["Blob Storage\n(Raw Zone)"]:::component
+A2["Blob Storage\nRaw Landing Zone"]:::component
 A3["Event Grid Trigger"]:::component
 A1 --> A2 --> A3
 end
 class ING layer
 
-%% === DOCUMENT AI ===
-subgraph DOC [Document AI - OCR + Extraction]
+%% === DOCUMENT AI LAYER ===
+subgraph DOC [Document AI - OCR & Extraction]
 B1["Azure Form Recognizer"]:::component
 B2["Extracted JSON"]:::component
 B1 --> B2
@@ -26,11 +23,11 @@ end
 class DOC layer
 ING --> DOC
 
-%% === DATA PROCESSING ===
+%% === PROCESSING & VALIDATION ===
 subgraph PROC [Data Processing & Validation]
 C1["ADF / Databricks ETL"]:::component
-C2["DQM + Business Rules"]:::component
-C3["Canonical Model Mapping"]:::component
+C2["Data Quality\nBusiness Rules"]:::component
+C3["Canonical Mapping"]:::component
 C1 --> C2 --> C3
 end
 class PROC layer
@@ -40,7 +37,7 @@ DOC --> PROC
 subgraph STORE [Data Lake & Analytics Store]
 D1["Raw Zone"]:::component
 D2["Processed Zone"]:::component
-D3["Curated Zone\n(SQL / Delta Tables)"]:::component
+D3["Curated Zone\nSQL / Delta Tables"]:::component
 C3 --> D1
 C3 --> D2
 D2 --> D3
@@ -48,12 +45,12 @@ end
 class STORE layer
 PROC --> STORE
 
-%% === ML PLATFORM ===
-subgraph ML [Machine Learning Platform]
+%% === MACHINE LEARNING LAYER ===
+subgraph ML [ML Platform]
 E1["Feature Store"]:::component
 E2["Churn Model"]:::component
-E3["Next Best Offer"]:::component
-E4["Loan Risk Support"]:::component
+E3["Next Best Offer Model"]:::component
+E4["Loan Risk Support Model"]:::component
 E5["Model Monitoring"]:::component
 D3 --> E1
 E1 --> E2
@@ -66,10 +63,10 @@ end
 class ML layer
 STORE --> ML
 
-%% === SERVING LAYER ===
+%% === CONSUMPTION LAYER ===
 subgraph SERVE [Serving & Insights Delivery]
-F1["Underwriter UI\n(API Access)"]:::component
-F2["CRM Campaigns"]:::component
+F1["Underwriter UI\nAPI Layer"]:::component
+F2["CRM Campaign Integration"]:::component
 F3["Power BI Dashboards"]:::component
 E2 --> F1
 E4 --> F1
@@ -81,11 +78,11 @@ ML --> SERVE
 
 %% === SECURITY & GOVERNANCE ===
 subgraph SEC [Security & Governance]
-G1["RBAC / AAD"]:::security
-G2["Audit Logs / Lineage"]:::security
-G3["PII Encryption\n(At Rest + Transit)"]:::security
+G1["RBAC/AAD"]:::security
+G2["Audit Logging & Lineage"]:::security
+G3["PII Encryption\nAt Rest & Transit"]:::security
 end
 
-STORE -.-> SEC
+D3 -.-> SEC
 ML -.-> SEC
 SERVE -.-> SEC
