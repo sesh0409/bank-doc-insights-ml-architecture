@@ -3,16 +3,16 @@ flowchart LR
 
 %% INGESTION LAYER
 subgraph Ingestion
-    A1[🏦 Branch / Portal Upload\nWeb/Mobile App, Internal LOS]
-    A2[💾 ADLS Gen2 / Blob Storage\nLanding Zone - Raw Files]
-    A3[🔁 Event Grid Trigger\n(Async downstream processing)]
+    A1[🏦 Branch / Portal Upload<br/>Web/Mobile App, Internal LOS]
+    A2[💾 ADLS Gen2 / Blob Storage<br/>Landing Zone - Raw Files]
+    A3[🔁 Event Grid Trigger<br/>(Async downstream processing)]
     A1 --> A2
     A2 --> A3
 end
 
 %% DOCUMENT AI LAYER
 subgraph Document_AI[📄 Document AI - OCR & Extraction]
-    B1[Azure Form Recognizer\n(Prebuilt + Custom Models)]
+    B1[Azure Form Recognizer<br/>(Prebuilt + Custom Models)]
     B2[Extracted JSON + Confidence Scores]
     B1 --> B2
 end
@@ -33,7 +33,7 @@ B2 --> C1
 subgraph Storage[🗄 Central Data Lake + Warehouse]
     D1[(Raw Zone)]
     D2[(Processed Zone)]
-    D3[(Curated / Gold Zone\nSynapse SQL / Delta Tables)]
+    D3[(Curated / Gold Zone<br/>Synapse SQL / Delta Tables)]
     C3 --> D1
     C3 --> D2
     D2 --> D3
@@ -41,11 +41,11 @@ end
 
 %% ANALYTICS & INSIGHTS
 subgraph ML[🤖 ML Platform]
-    E1[Feature Store\nCustomer 360 Features]
+    E1[Feature Store<br/>Customer 360 Features]
     E2[Churn Prediction Model]
     E3[Next Best Offer Model]
     E4[Loan Risk Support Model]
-    E5[Model Monitoring\nAUC, Drift, Explainability]
+    E5[Model Monitoring<br/>AUC, Drift, Explainability]
     D3 --> E1
     E1 --> E2
     E1 --> E3
@@ -57,9 +57,9 @@ end
 
 %% CONSUMPTION LAYER
 subgraph Serving[📊 Serving & Consumption]
-    F1[Underwriter UI\nLow-Latency API]
+    F1[Underwriter UI<br/>Low-Latency API]
     F2[CRM / Campaign Systems]
-    F3[Power BI Dashboards\nExecutive KPIs]
+    F3[Power BI Dashboards<br/>Executive KPIs]
 end
 
 E2 --> F1
