@@ -31,6 +31,26 @@ flowchart TB
     C -.-> G["Hot Storage - Low Latency Views"]
 
 ```
+
+## 🧩 Data Flow into Power BI (Azure Cloud)
+
+Operational and ML-derived insights are consumed through secure and governed dashboards in Power BI.
+Only validated and privacy-compliant data from the Curated (Gold) Zone is exposed to business users.
+
+Access is tightly controlled using:
+
+Azure AD authentication
+
+Role-Based Access Control (RBAC)
+
+Row-Level Security (RLS) → users only see authorized region/customers
+
+Data masking for high-risk PII fields (e.g., account numbers)
+
+Audit logs for dashboard views & data access
+
+This ensures analytics helps accelerate decisioning without compromising financial data security.
+
 ```mermaid
 flowchart TB
 
