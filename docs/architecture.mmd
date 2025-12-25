@@ -1,4 +1,4 @@
-flowchart LR
+flowchart TB
 
 %% INGESTION LAYER
 subgraph Ingestion
@@ -16,8 +16,6 @@ subgraph Document_AI [Document AI - OCR and Extraction]
     B1 --> B2
 end
 
-A3 --> B1
-
 %% PROCESSING & VALIDATION
 subgraph Processing [Data Processing and Validation]
     C1[Azure Data Factory / Databricks ETL]
@@ -25,8 +23,6 @@ subgraph Processing [Data Processing and Validation]
     C3[Schema Mapping to Canonical Model]
     C1 --> C2 --> C3
 end
-
-B2 --> C1
 
 %% STORAGE LAYER
 subgraph Storage [Central Data Lake and Warehouse]
@@ -61,10 +57,8 @@ subgraph Serving [Serving and Consumption]
     F3[Power BI Dashboards - Executive KPIs]
 end
 
-E2 --> F1
-E3 --> F2
-E4 --> F1
-D3 --> F3
+%% LAYER-TO-LAYER FLOW (STACK VERTICALLY)
+Ingestion --> Document_AI --> Processing --> Storage --> ML --> Serving
 
 %% SECURITY & GOVERNANCE
 subgraph Security [Governance]
