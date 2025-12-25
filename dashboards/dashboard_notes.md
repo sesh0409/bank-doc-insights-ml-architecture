@@ -22,12 +22,12 @@ Data ingestion into Power BI follows governed access from the **Curated (Gold) Z
 
 ```mermaid
 flowchart TB
+    A["Raw Data - ADLS Gen2"] --> B["ETL - Azure Data Factory / Databricks"]
+    B --> C["Curated Zone - Delta Tables / Synapse"]
+    C --> D[["Azure Synapse SQL / Power BI DirectQuery"]]
+    D --> E["Power BI Dashboards - Users & Decision Makers"]
+    
+    E -.-> F["Row-level Security (RBAC & Azure AD)"]
+    C -.-> G["Hot Storage - Low Latency Views"]
 
-A[Raw Data<br>ADLS Gen2] --> B[ETL<br>Azure Data Factory / Databricks]
-B --> C[Curated Zone<br>Delta Tables / Synapse]
-C --> D[(Azure Synapse SQL<br>Power BI DirectQuery)]
-D --> E[Power BI Dashboards<br>Users & Decision Makers]
-
-E -.-> F[Row-level Security<br>(RBAC + AAD)]
-C -.-> G[Hot Storage<br>Low Latency Views]
 ```
