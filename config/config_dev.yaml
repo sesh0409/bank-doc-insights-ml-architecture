@@ -1,0 +1,61 @@
+# =========================================================
+# DEV CONFIG — Azure ML Architecture Repo
+# Non-production, synthetic / masked data, experimentation allowed.
+# =========================================================
+
+environment: "dev"
+
+storage:
+  account_name: "devadlsaccount"
+  container_raw: "raw-documents-dev"
+  container_processed: "processed-data-dev"
+  container_curated: "gold-zone-dev"
+  file_system_type: "adls_gen2"
+
+document_ai:
+  endpoint: "https://<region>-dev.cognitiveservices.azure.com/"
+  form_recognizer_key: "DEV_FORM_RECOGNIZER_KEY"
+  model_ids:
+    bank_statement: "dev-model-bank-statement"
+    loan_application: "dev-model-loan-app"
+    onboarding_form: "dev-model-onboarding"
+
+data_validation:
+  enforce_schema: true
+  dq_rules:
+    - "no_null_critical_fields"
+    - "income_positive"
+    - "valid_customer_age"
+  allow_experimental_fields: true
+
+ml:
+  aml_workspace: "bank-analytics-ml-ws-dev"
+  resource_group: "bank-analytics-dev-rg"
+  subscription_id: "00000000-0000-0000-0000-000000000000"
+  compute_cluster_name: "ml-compute-dev"
+  default_model_version: "1"
+  enable_auto_retrain: false
+
+api:
+  scoring_endpoint:
+    churn_model: "https://api-dev.bank.com/churn/score"
+    loan_risk_model: "https://api-dev.bank.com/loan-risk/score"
+  batch_scoring_schedule: "0 */4 * * *"   # Every 4 hours in Dev
+
+logging:
+  level: "DEBUG"
+  enable_audit: true
+  audit_sink: "log_analytics_dev"
+
+powerbi:
+  workspace: "Bank-Analytics-Dev"
+  datasets:
+    - "Customer360_Dev"
+    - "LoanRisk_Dev"
+    - "ChurnInsights_Dev"
+
+security:
+  use_managed_identity: true
+  key_vault_name: "bank-analytics-kv-dev"
+  enforce_pii_masking: false
+  allow_test_users: true
