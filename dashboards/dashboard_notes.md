@@ -1,13 +1,13 @@
-# 📊 Dashboards & Analytics — Business Intelligence Layer
+# Dashboards & Analytics — Business Intelligence Layer
 
 This document describes how analytics insights are exposed to end users such as:
-- 🧑‍💼 Underwriters (risk support, decision confidence)
-- 🎯 CRM / Marketing (next-best-offer targeting, retention tracking)
-- 🧑‍⚖️ Executives (operational KPIs & business outcomes)
+- Underwriters (risk support, decision confidence)
+- CRM / Marketing (next-best-offer targeting, retention tracking)
+- Executives (operational KPIs & business outcomes)
 
 ---
 
-## 🎯 Objectives
+## Objectives
 
 - Provide a **single pane of glass** for customer intelligence
 - Support **loan decisioning** through risk scores + explainability
@@ -32,7 +32,7 @@ flowchart TB
 
 ```
 
-## 🧩 Data Flow into Power BI (Azure Cloud)
+## Data Flow into Power BI (Azure Cloud)
 
 Operational and ML-derived insights are consumed through secure and governed dashboards in Power BI.
 Only validated and privacy-compliant data from the Curated (Gold) Zone is exposed to business users.
