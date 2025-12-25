@@ -299,3 +299,23 @@ This repository contains:
 - `config/` – Example configuration placeholders
 
 The goal is to present the **end-to-end architecture and implementation approach**, not a fully productionized solution.
+
+## Limitations and Future Enhancements
+
+While this solution meets current business goals for document automation and customer intelligence, the following improvement opportunities will strengthen competitiveness:
+
+1.Expand beyond document-driven insights to richer core banking integrations.
+
+2.Increase real-time inference across customer digital journeys, not just underwriting.
+
+3.Extend personalization models using behavioral, app interaction, and segmentation data.
+
+4.Incorporate AI-powered fraud scoring and risk-based pricing models into the pipeline.
+
+5.Integrate customer feedback and sentiment analytics to accelerate customer retention.
+
+6.Introduce reinforcement learning for Next-Best-Action to continuously optimize outcomes.
+
+7.Enable federated learning to support secure collaboration with partner ecosystems.
+
+These enhancements will elevate the bank’s capability to deliver faster decisions, deeper personalization, and more intelligent financial engagement aligned with evolving industry standards.
