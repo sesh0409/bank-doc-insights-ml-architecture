@@ -10,7 +10,7 @@ classDef security fill:#FDE7E7,stroke:#B22222,stroke-width:1.5px,color:#7A0000,f
 
 %% === INGESTION LAYER ===
 subgraph ING [Ingestion Layer]
-A1["Branch/Portal Upload"]:::component
+A1["Branch / Portal Upload"]:::component
 A2["Blob Storage\n(Raw Zone)"]:::component
 A3["Event Grid Trigger"]:::component
 A1 --> A2 --> A3
@@ -28,9 +28,9 @@ ING --> DOC
 
 %% === DATA PROCESSING ===
 subgraph PROC [Data Processing & Validation]
-C1["Data Factory / Databricks\nETL"]:::component
-C2["Data Quality\nBusiness Rules"]:::component
-C3["Canonical Mapping"]:::component
+C1["ADF / Databricks ETL"]:::component
+C2["DQM + Business Rules"]:::component
+C3["Canonical Model Mapping"]:::component
 C1 --> C2 --> C3
 end
 class PROC layer
@@ -40,7 +40,7 @@ DOC --> PROC
 subgraph STORE [Data Lake & Analytics Store]
 D1["Raw Zone"]:::component
 D2["Processed Zone"]:::component
-D3["Curated Zone\n(SQL / Delta)"]:::component
+D3["Curated Zone\n(SQL / Delta Tables)"]:::component
 C3 --> D1
 C3 --> D2
 D2 --> D3
@@ -70,7 +70,7 @@ STORE --> ML
 subgraph SERVE [Serving & Insights Delivery]
 F1["Underwriter UI\n(API Access)"]:::component
 F2["CRM Campaigns"]:::component
-F3["Power BI\nExecutive KPIs"]:::component
+F3["Power BI Dashboards"]:::component
 E2 --> F1
 E4 --> F1
 E3 --> F2
@@ -83,9 +83,9 @@ ML --> SERVE
 subgraph SEC [Security & Governance]
 G1["RBAC / AAD"]:::security
 G2["Audit Logs / Lineage"]:::security
-G3["Encryption & Compliance"]:::security
+G3["PII Encryption\n(At Rest + Transit)"]:::security
 end
 
-D3 -.-> SEC
+STORE -.-> SEC
 ML -.-> SEC
 SERVE -.-> SEC
