@@ -1,72 +1,89 @@
+## Solution Architecture — Customer Insights & Loan Process Optimization
+
+```mermaid
 flowchart TB
 
-%% INGESTION LAYER
-subgraph Ingestion
-    A1[Branch / Portal Upload - Web/Mobile App, Internal LOS]
-    A2[ADLS Gen2 / Blob Storage - Landing Zone Raw Files]
-    A3[Event Grid Trigger - Async downstream processing]
-    A1 --> A2
-    A2 --> A3
-end
+    %% === GLOBAL STYLE CONFIG ===
+    classDef layer fill:#0078D4,stroke:#003B73,stroke-width:3px,color:#ffffff,font-weight:bold;
+    classDef component fill:#E5F3FF,stroke:#0078D4,stroke-width:2px,color:#003B73,font-weight:bold;
+    classDef security fill:#FDE7E7,stroke:#B22222,stroke-width:2px,color:#7A0000,font-weight:bold;
 
-%% DOCUMENT AI LAYER
-subgraph Document_AI [Document AI - OCR and Extraction]
-    B1[Azure Form Recognizer - Prebuilt and Custom Models]
-    B2[Extracted JSON and Confidence Scores]
-    B1 --> B2
-end
+    %% === INGESTION LAYER ===
+    subgraph ING [Ingestion Layer]
+        A1["Branch / Portal Upload\nWeb / Mobile App\nInternal LOS"]:::component
+        A2["ADLS Gen2 / Blob Storage\nRaw Landing Zone"]:::component
+        A3["Event Grid Trigger\nAsync Processing Signal"]:::component
+        A1 --> A2 --> A3
+    end
+    class ING layer
 
-%% PROCESSING & VALIDATION
-subgraph Processing [Data Processing and Validation]
-    C1[Azure Data Factory / Databricks ETL]
-    C2[Data Quality Rules and Business Validation]
-    C3[Schema Mapping to Canonical Model]
-    C1 --> C2 --> C3
-end
+    %% === DOCUMENT AI LAYER ===
+    subgraph DOC [Document AI - OCR & Extraction]
+        B1["Azure Form Recognizer\nCustom + Prebuilt Models"]:::component
+        B2["Extracted JSON\nConfidence Scores"]:::component
+        B1 --> B2
+    end
+    class DOC layer
+    ING --> DOC
 
-%% STORAGE LAYER
-subgraph Storage [Central Data Lake and Warehouse]
-    D1[(Raw Zone)]
-    D2[(Processed Zone)]
-    D3[(Curated / Gold Zone - Synapse SQL / Delta Tables)]
-    C3 --> D1
-    C3 --> D2
-    D2 --> D3
-end
+    %% === PROCESSING LAYER ===
+    subgraph PROC [Data Processing & Validation]
+        C1["Azure Data Factory / Databricks\nETL Pipelines"]:::component
+        C2["Business Rules\nData Quality Validation"]:::component
+        C3["Schema Mapping to\nCanonical Customer Model"]:::component
+        C1 --> C2 --> C3
+    end
+    class PROC layer
+    DOC --> PROC
 
-%% ANALYTICS & INSIGHTS
-subgraph ML [ML Platform]
-    E1[Feature Store - Customer 360 Features]
-    E2[Churn Prediction Model]
-    E3[Next Best Offer Model]
-    E4[Loan Risk Support Model]
-    E5[Model Monitoring - AUC, Drift, Explainability]
-    D3 --> E1
-    E1 --> E2
-    E1 --> E3
-    E1 --> E4
-    E2 --> E5
-    E3 --> E5
-    E4 --> E5
-end
+    %% === STORAGE LAYER ===
+    subgraph STORE [Central Data Lake & Analytics Store]
+        D1["Raw Zone"]:::component
+        D2["Processed Zone"]:::component
+        D3["Curated/Gold Zone\nSynapse SQL / Delta Tables"]:::component
+        C3 --> D1
+        C3 --> D2
+        D2 --> D3
+    end
+    class STORE layer
+    PROC --> STORE
 
-%% CONSUMPTION LAYER
-subgraph Serving [Serving and Consumption]
-    F1[Underwriter UI - Low-latency API]
-    F2[CRM / Campaign Systems]
-    F3[Power BI Dashboards - Executive KPIs]
-end
+    %% === ML INSIGHTS LAYER ===
+    subgraph ML [ML Platform]
+        E1["Feature Store\nCustomer 360 Features"]:::component
+        E2["Churn Prediction"]:::component
+        E3["Next Best Offer"]:::component
+        E4["Loan Risk Support Model"]:::component
+        E5["Model Monitoring\nAUC + Drift + Explainability"]:::component
+        D3 --> E1
+        E1 --> E2 & E3 & E4
+        E2 --> E5
+        E3 --> E5
+        E4 --> E5
+    end
+    class ML layer
+    STORE --> ML
 
-%% LAYER-TO-LAYER FLOW (STACK VERTICALLY)
-Ingestion --> Document_AI --> Processing --> Storage --> ML --> Serving
+    %% === SERVING LAYER ===
+    subgraph SERVE [Consumption & Insights Serving]
+        F1["Underwriter UI\nLow Latency APIs"]:::component
+        F2["CRM Systems\nCampaign Targeting"]:::component
+        F3["Power BI Dashboards\nExecutive KPIs"]:::component
+        E2 --> F1
+        E4 --> F1
+        E3 --> F2
+        D3 --> F3
+    end
+    class SERVE layer
+    ML --> SERVE
 
-%% SECURITY & GOVERNANCE
-subgraph Security [Governance]
-    G1[RBAC, PIM, Azure AD]
-    G2[Audit Logs and Lineage]
-    G3[PII Encryption at Rest and in Transit]
-end
+    %% === SECURITY & GOVERNANCE OVERLAY ===
+    subgraph SEC [Security & Governance Layer]
+        G1["RBAC / AAD / PIM"]:::security
+        G2["Audit Logging + Lineage"]:::security
+        G3["PII Encryption\nAt Rest & Transit"]:::security
+    end
 
-Storage -.-> Security
-ML -.-> Security
-Serving -.-> Security
+    STORE -.-> SEC
+    ML -.-> SEC
+    SERVE -.-> SEC
