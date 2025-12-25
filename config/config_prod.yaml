@@ -1,0 +1,63 @@
+# =========================================================
+# PROD CONFIG — Azure ML Architecture Repo
+# Live workloads and real customer data, strict controls.
+# =========================================================
+
+environment: "prod"
+
+storage:
+  account_name: "prodadlsaccount"
+  container_raw: "raw-documents"
+  container_processed: "processed-data"
+  container_curated: "gold-zone"
+  file_system_type: "adls_gen2"
+
+document_ai:
+  endpoint: "https://<region>.cognitiveservices.azure.com/"
+  form_recognizer_key: "PROD_FORM_RECOGNIZER_KEY"
+  model_ids:
+    bank_statement: "prod-model-bank-statement"
+    loan_application: "prod-model-loan-app"
+    onboarding_form: "prod-model-onboarding"
+
+data_validation:
+  enforce_schema: true
+  dq_rules:
+    - "no_null_critical_fields"
+    - "income_positive"
+    - "valid_customer_age"
+    - "valid_country_region"
+    - "no_negative_balances"
+  allow_experimental_fields: false
+
+ml:
+  aml_workspace: "bank-analytics-ml-ws-prod"
+  resource_group: "bank-analytics-prod-rg"
+  subscription_id: "00000000-0000-0000-0000-000000000000"
+  compute_cluster_name: "ml-compute-prod"
+  default_model_version: "approved"
+  enable_auto_retrain: true
+
+api:
+  scoring_endpoint:
+    churn_model: "https://api.bank.com/churn/score"
+    loan_risk_model: "https://api.bank.com/loan-risk/score"
+  batch_scoring_schedule: "0 * * * *"    # Every 1 hour in Prod
+
+logging:
+  level: "WARN"
+  enable_audit: true
+  audit_sink: "log_analytics_prod"
+
+powerbi:
+  workspace: "Bank-Analytics-Prod"
+  datasets:
+    - "Customer360"
+    - "LoanRisk"
+    - "ChurnInsights"
+
+security:
+  use_managed_identity: true
+  key_vault_name: "bank-analytics-kv-prod"
+  enforce_pii_masking: true
+  allow_test_users: false
