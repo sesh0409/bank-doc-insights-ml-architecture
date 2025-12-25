@@ -1,0 +1,79 @@
+%% Architecture for Customer Insights & Loan Process Optimization
+flowchart LR
+
+%% INGESTION LAYER
+subgraph Ingestion
+    A1[🏦 Branch / Portal Upload\nWeb/Mobile App, Internal LOS]
+    A2[💾 ADLS Gen2 / Blob Storage\nLanding Zone - Raw Files]
+    A3[🔁 Event Grid Trigger\n(Async downstream processing)]
+    A1 --> A2
+    A2 --> A3
+end
+
+%% DOCUMENT AI LAYER
+subgraph Document_AI[📄 Document AI - OCR & Extraction]
+    B1[Azure Form Recognizer\n(Prebuilt + Custom Models)]
+    B2[Extracted JSON + Confidence Scores]
+    B1 --> B2
+end
+
+A3 --> B1
+
+%% PROCESSING & VALIDATION
+subgraph Processing[🔄 Data Processing & Validation]
+    C1[Azure Data Factory / Databricks ETL]
+    C2[Data Quality Rules & Business Validation]
+    C3[Schema Mapping to Canonical Model]
+    C1 --> C2 --> C3
+end
+
+B2 --> C1
+
+%% STORAGE LAYER
+subgraph Storage[🗄 Central Data Lake + Warehouse]
+    D1[(Raw Zone)]
+    D2[(Processed Zone)]
+    D3[(Curated / Gold Zone\nSynapse SQL / Delta Tables)]
+    C3 --> D1
+    C3 --> D2
+    D2 --> D3
+end
+
+%% ANALYTICS & INSIGHTS
+subgraph ML[🤖 ML Platform]
+    E1[Feature Store\nCustomer 360 Features]
+    E2[Churn Prediction Model]
+    E3[Next Best Offer Model]
+    E4[Loan Risk Support Model]
+    E5[Model Monitoring\nAUC, Drift, Explainability]
+    D3 --> E1
+    E1 --> E2
+    E1 --> E3
+    E1 --> E4
+    E2 --> E5
+    E3 --> E5
+    E4 --> E5
+end
+
+%% CONSUMPTION LAYER
+subgraph Serving[📊 Serving & Consumption]
+    F1[Underwriter UI\nLow-Latency API]
+    F2[CRM / Campaign Systems]
+    F3[Power BI Dashboards\nExecutive KPIs]
+end
+
+E2 --> F1
+E3 --> F2
+E4 --> F1
+D3 --> F3
+
+%% SECURITY & GOVERNANCE
+subgraph Security[🔐 Governance]
+    G1[RBAC + PIM + AAD]
+    G2[Audit Logs + Lineage]
+    G3[PII Encryption at Rest & Transit]
+end
+
+Storage -.-> Security
+ML -.-> Security
+Serving -.-> Security
